@@ -1,0 +1,10 @@
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.magicscan_settings.json
+settings.json
+config.py
+*.egg-info/
+dist/
+build/
