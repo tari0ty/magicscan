@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MagicScan Report — 2026-05-21 18:18:23</title>
+<style>
+  /* ── Reset & base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #0a0e1a;
+    color: #e2e8f0;
+    min-height: 100vh;
+    padding: 0 0 40px;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: #111827;
+    border-bottom: 1px solid #1e2d45;
+    padding: 28px 40px 20px;
+  }
+  .header h1 {
+    font-size: 26px;
+    color: #00d4ff;
+    font-family: monospace;
+    letter-spacing: -0.5px;
+  }
+  .header .subtitle {
+    color: #64748b;
+    font-size: 13px;
+    margin-top: 4px;
+  }
+  .timestamp {
+    color: #64748b;
+    font-size: 12px;
+    font-family: monospace;
+    margin-top: 6px;
+  }
+
+  /* ── Summary bar ── */
+  .summary {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    padding: 20px 40px;
+    background: #0a0e1a;
+  }
+  .stat-card {
+    background: #111827;
+    border: 1px solid #1e2d45;
+    border-radius: 10px;
+    padding: 16px;
+    text-align: center;
+  }
+  .stat-card .number {
+    font-size: 28px;
+    font-family: monospace;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .stat-card .label {
+    font-size: 11px;
+    color: #64748b;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .num-total   { color: #00d4ff; }
+  .num-clean   { color: #10b981; }
+  .num-flagged { color: #ef4444; }
+  .num-warn    { color: #f59e0b; }
+  .num-threat  { color: #ef4444; }
+
+  /* ── Table ── */
+  .table-wrap {
+    padding: 0 40px;
+    overflow-x: auto;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  thead th {
+    background: #1a2235;
+    color: #64748b;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid #1e2d45;
+  }
+  tbody tr {
+    border-bottom: 1px solid #1a2235;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: #1a2235; }
+  td { padding: 10px 14px; vertical-align: middle; }
+
+  /* Row tints */
+  .row-clean   { background: rgba(16,185,129,0.04); }
+  .row-warn    { background: rgba(245,158,11,0.04); }
+  .row-threat  { background: rgba(239,68,68,0.05); }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    font-family: monospace;
+  }
+  .clean  { background: rgba(16,185,129,0.15);  color: #10b981; }
+  .warn   { background: rgba(245,158,11,0.15);  color: #f59e0b; }
+  .threat { background: rgba(239,68,68,0.15);   color: #ef4444; }
+
+  /* ── Detail block (expandable) ── */
+  .detail-row td { padding: 0; }
+  .detail-block {
+    background: #111827;
+    border-left: 3px solid #1e2d45;
+    padding: 16px 20px;
+    font-size: 12px;
+  }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+  .detail-section h4 {
+    font-family: monospace;
+    font-size: 10px;
+    color: #00d4ff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .detail-section p {
+    color: #64748b;
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+  .detail-section span {
+    color: #e2e8f0;
+    font-family: monospace;
+    font-size: 11px;
+    word-break: break-all;
+  }
+  .finding {
+    background: rgba(239,68,68,0.08);
+    border-left: 3px solid #ef4444;
+    padding: 6px 10px;
+    margin-top: 6px;
+    font-size: 11px;
+    color: #ef4444;
+    border-radius: 0 4px 4px 0;
+  }
+  .hex {
+    font-family: monospace;
+    font-size: 11px;
+    color: #64748b;
+    background: #1a2235;
+    padding: 6px 10px;
+    border-radius: 4px;
+    word-break: break-all;
+  }
+  .mono { font-family: monospace; }
+  .filename { font-family: monospace; font-weight: 600; }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    color: #1e2d45;
+    font-size: 11px;
+    margin-top: 40px;
+    font-family: monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🔬 MagicScan</h1>
+  <div class="subtitle">File Type Validator — Magic Number Analysis Report</div>
+  <div class="timestamp">Generated: 2026-05-21 18:18:23</div>
+</div>
+
+<div class="summary">
+  <div class="stat-card"><div class="number num-total">1</div><div class="label">Total Scanned</div></div>
+  <div class="stat-card"><div class="number num-clean">1</div><div class="label">Clean</div></div>
+  <div class="stat-card"><div class="number num-flagged">0</div><div class="label">Flagged</div></div>
+  <div class="stat-card"><div class="number num-warn">0</div><div class="label">Warnings</div></div>
+  <div class="stat-card"><div class="number num-threat">0</div><div class="label">Threats</div></div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>Status</th>
+        <th>Filename</th>
+        <th>Detected Type</th>
+        <th>Extension</th>
+        <th>Size</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+            <tr class="row-clean" onclick="toggle('detail_0')">
+                <td><span class="badge clean">✓ CLEAN</span></td>
+                <td class="filename">aa.jpeg</td>
+                <td>JPEG Image</td>
+                <td>.jpeg</td>
+                <td class="mono">17.0 KB</td>
+            </tr>
+            <tr id="detail_0" class="detail-row" style="display:none;">
+                <td colspan="5">
+                    
+        <div class="detail-block">
+          
+          <div class="detail-grid">
+            <div class="detail-section">
+              <h4>File Info</h4>
+              <p>Full path</p><span>/home/tari0ty/Downloads/aa.jpeg</span><br><br>
+              <p>Detected type</p><span>JPEG Image</span><br><br>
+              <p>Extension</p><span>.jpeg</span><br><br>
+              <p>File size</p><span>17.0 KB</span>
+            </div>
+            <div class="detail-section">
+              <h4>Hex Header</h4>
+              <div class="hex">FF D8 FF E0 00 10 4A 46 49 46 00 01 01 00 00 01</div>
+            </div>
+            
+        <div class="detail-section">
+            <h4>File Hashes</h4>
+            <p>MD5</p><span>85c9f13c2deef862378c974bfb2cf9fd</span><br><br>
+            <p>SHA-1</p><span>d64fd7b7c141507eb7f1bed297b035f6fc5c4b5a</span><br><br>
+            <p>SHA-256</p><span>c7b5f48e61da1ef489c157db435d04153c226c541ebde22d5359e7296151d0ea</span>
+        </div>
+            <div class="detail-section"><h4>Metadata</h4><p>Dimensions</p><span>275 x 183 px</span><br><p>Color mode</p><span>RGB</span><br><p>Format</p><span>JPEG</span><br></div>
+            <div class="detail-section"><h4>Probability Match</h4>
+                <div style="margin-bottom:6px;">
+                  <span style="font-family:monospace;color:#10b981;font-size:11px;">
+                    100%
+                  </span>
+                  <span style="font-size:11px;color:#e2e8f0;margin-left:8px;">JPEG Image</span>
+                </div></div>
+          </div>
+        </div>
+                </td>
+            </tr>
+            
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">MagicScan — Cybersecurity Portfolio Project</div>
+
+<script>
+  // Toggle the detail row when a file row is clicked
+  function toggle(id) {
+    var row = document.getElementById(id);
+    row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+  }
+</script>
+
+</body>
+</html>
