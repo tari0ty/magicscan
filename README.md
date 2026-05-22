@@ -39,7 +39,8 @@ professional forensic analysts.
 
 ## Screenshots
 
-<!-- Add screenshots here after uploading to GitHub -->
+<img width="1919" height="850" alt="magicscan" src="https://github.com/user-attachments/assets/01b3fbb8-dd23-4303-b16b-044cd1b1c441" />
+
 
 ---
 
